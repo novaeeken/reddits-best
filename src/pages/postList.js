@@ -4,6 +4,7 @@ import {
   Heading,
   Post,
 } from '../components';
+import { useFetchData } from '../helpers';
 
 const PageContainer = styled.div`
   width: 100%;
@@ -14,15 +15,32 @@ const PageContainer = styled.div`
   align-content: center;
 `;
 
-const PostList = ({ posts }) => (
-  <PageContainer>
-    <div>
-      <Heading title="Home" subtitle="Top 10 posts" indent />
-      {posts.map(item => (
-      <Post title="What’s something the internet killed that you miss?" subreddit="AskReddit" numberOfPoints="12.876" />
-      ))}
-    </div>
-  </PageContainer>
-);
+const PostList = () => {
+  const { error, loading, items } = useFetchData('https://www.reddit.com/best.json?limit=10');
+
+  if (error) { return <span>Error:{error.message}</span> }
+  if (loading) { return <span>Loading...</span> };
+
+  console.log(items)
+
+  return (
+    <PageContainer>
+      <div>
+        <Heading title="Home" subtitle="Top 10 posts" indent />
+        {items.data
+          && items.data.children.map(item => {
+            return (<Post
+                key={item.data.id}
+                title={item.data.title}
+                subreddit={item.data.subreddit}
+                subredditPrefixed={item.data.subreddit_name_prefixed}
+                numberOfPoints={item.data.score}
+              />)
+            })
+        }
+      </div>
+    </PageContainer>
+  );
+};
 
 export default PostList;

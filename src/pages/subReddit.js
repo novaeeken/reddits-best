@@ -5,6 +5,7 @@ import {
   TitleDescriptionPair,
   BackNavigation,
 } from '../components';
+import { useFetchData } from '../helpers';
 
 const PageContainer = styled.div`
   width: 100%;
@@ -31,18 +32,24 @@ const Wrapper = styled.div`
   }
 `;
 
-const SubReddit = () => (
-  <PageContainer>
+const SubReddit = ({ match }) => {
+  const { subreddit } = match.params;
+  const { error, loading, items } = useFetchData(`https://www.reddit.com/r/${subreddit}/about.json`);
+
+  if (error) { return <span>Error:{error.message}</span> }
+  if (loading) { return <span>Loading...</span> };
+
+  return (<PageContainer>
     <Wrapper>
       <BackNavigation title="Home" />
-      <Heading title="r/AskReddit" subtitle="Subreddit details" />
+      {items.data && <Heading title={items.data.display_name_prefixed} subtitle="Subreddit details" /> }
       <Details>
-        <TitleDescriptionPair title="Title" description="Ask Reddit..." />
-        <TitleDescriptionPair title="Public Description" description="/r/AskReddit is the place to ask and answer thought-provoking questions." />
-        <TitleDescriptionPair title="Subscriber count" description="22.206.671" />
+        {items.data && <TitleDescriptionPair title="Title" description={items.data.title} />}
+        {items.data && <TitleDescriptionPair title="Public Description" description={items.data.public_description} />}
+        {items.data && <TitleDescriptionPair title="Subscriber count" description={items.data.subscribers} />}
       </Details>
     </Wrapper>
-  </PageContainer>
-);
+  </PageContainer>)
+};
 
 export default SubReddit;

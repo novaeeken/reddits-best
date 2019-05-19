@@ -63,11 +63,11 @@ const PostDetails = styled.section`
   align-items: center;
 `;
 
-const Post = ({ title, subreddit, numberOfPoints }) => (
+const Post = ({ title, subreddit, subredditPrefixed, numberOfPoints }) => (
   <Card>
     <PostTitleLink to="/"><h4>{title}</h4></PostTitleLink>
     <PostDetails>
-      <SubredditLink to="/subreddit"><h5>r/{subreddit}</h5></SubredditLink>
+      <SubredditLink to={`/${subreddit}`}><h5>{subredditPrefixed}</h5></SubredditLink>
       <Points><strong>• {numberOfPoints}</strong> points</Points>
     </PostDetails>
   </Card>
