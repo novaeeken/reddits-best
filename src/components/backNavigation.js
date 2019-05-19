@@ -6,20 +6,21 @@ import styled from 'styled-components';
 const BackButton = styled(Link)`
   display: flex;
   align-items: center;
-  color: ${(props) => props.theme.blue400};
+  color: ${(props) => props.theme.colors.blue400};
   font-size: 22px;
   font-weight: bold;
   text-decoration: none;
+  padding: 1rem 0;
 
   &:visited, :active {
-    color: ${(props) => props.theme.blue400};
+    color: ${(props) => props.theme.colors.blue400};
   }
   &:hover {
-    color: ${(props) => props.theme.blue300};
+    color: ${(props) => props.theme.colors.blue300};
   }
 
   h3 {
-    margin: 0 0 0 0.25rem;
+    padding: 0 0 0 0.5rem;
   }
 `;
 

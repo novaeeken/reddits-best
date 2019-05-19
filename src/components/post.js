@@ -3,16 +3,22 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Card = styled.article`
-  border: 1px solid ${(props) => props.theme.gray200};
+  border: 1px solid ${(props) => props.theme.colors.gray200};
   border-radius: 2px;
-  background-color: ${(props) => props.theme.white};
-  padding: 1.5rem;
-  margin: 0.5rem 0;
+  background-color: ${(props) => props.theme.colors.white};
+  padding: ${(props) => props.theme.paddingMobile};
+  margin: 0;
+  width: 100%;
+  @media only screen and (min-width: 667px) {
+    max-width: 43rem;
+    margin: 1rem 0;
+    padding: ${(props) => props.theme.paddingDefault};
+  }
 `;
 
 const PostTitleLink = styled(Link)`
   text-decoration: none;
-  color: ${(props) => props.theme.blue700};
+  color: ${(props) => props.theme.colors.blue700};
 
   h4 {
     font-weight: bold;
@@ -21,16 +27,16 @@ const PostTitleLink = styled(Link)`
   }
 
   &:visited, :active {
-    color: ${(props) => props.theme.blue700};
+    color: ${(props) => props.theme.colors.blue700};
   }
   &:hover {
-    color: ${(props) => props.theme.blue600};
+    color: ${(props) => props.theme.colors.blue600};
   }
 `;
 
 const SubredditLink = styled(Link)`
   text-decoration: none;
-  color: ${(props) => props.theme.blue400};
+  color: ${(props) => props.theme.colors.blue400};
   padding: 0 .25rem 0 0;
 
   h5 {
@@ -39,15 +45,15 @@ const SubredditLink = styled(Link)`
   }
 
   &:visited, :active {
-    color: ${(props) => props.theme.blue400};
+    color: ${(props) => props.theme.colors.blue400};
   }
   &:hover {
-    color: ${(props) => props.theme.blue300};
+    color: ${(props) => props.theme.colors.blue300};
   }
 `;
 
 const Points = styled.h6`
-  color: ${(props) => props.theme.gray500};
+  color: ${(props) => props.theme.colors.gray500};
   font-size: 18px;
   font-weight: 400;
 `;
