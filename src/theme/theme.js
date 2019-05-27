@@ -11,5 +11,5 @@ export default {
     blue700: '#263D52',
   },
   paddingDefault: '1.5rem',
-  paddingMobile: '0.5rem',
+  paddingMobile: '1rem',
 };

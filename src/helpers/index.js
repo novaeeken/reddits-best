@@ -1,7 +1,9 @@
-import useFetchData from './useFetchData';
+import fetchData from './fetchData';
+import getDotNotation from './getDotNotation';
 
 export {
-  useFetchData,
+  fetchData,
+  getDotNotation,
 };
 
 export default null;

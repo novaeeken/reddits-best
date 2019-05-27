@@ -16,15 +16,9 @@ const Card = styled.article`
   }
 `;
 
-const PostTitleLink = styled(Link)`
+const PostTitleLink = styled.a`
   text-decoration: none;
   color: ${(props) => props.theme.colors.blue700};
-
-  h4 {
-    font-weight: bold;
-    font-size: 24px;
-    padding: 0 0 0.75rem 0;
-  }
 
   &:visited, :active {
     color: ${(props) => props.theme.colors.blue700};
@@ -34,15 +28,16 @@ const PostTitleLink = styled(Link)`
   }
 `;
 
+export const PostTitle = styled.h4`
+  font-weight: bold;
+  font-size: 1.25rem;
+  padding: 0 0 0.75rem 0;
+`;
+
 const SubredditLink = styled(Link)`
   text-decoration: none;
   color: ${(props) => props.theme.colors.blue400};
   padding: 0 .25rem 0 0;
-
-  h5 {
-    font-weight: bold;
-    font-size: 18px;
-  }
 
   &:visited, :active {
     color: ${(props) => props.theme.colors.blue400};
@@ -52,9 +47,14 @@ const SubredditLink = styled(Link)`
   }
 `;
 
-const Points = styled.h6`
+export const Subreddit = styled.h5`
+  font-weight: bold;
+  font-size: 1rem;
+`;
+
+export const Points = styled.h6`
   color: ${(props) => props.theme.colors.gray500};
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: 400;
 `;
 
@@ -63,11 +63,15 @@ const PostDetails = styled.section`
   align-items: center;
 `;
 
-const Post = ({ title, subreddit, subredditPrefixed, numberOfPoints }) => (
+const Post = ({ title, subreddit, subredditPrefixed, numberOfPoints, link }) => (
   <Card>
-    <PostTitleLink to="/"><h4>{title}</h4></PostTitleLink>
+    <PostTitleLink href={link}>
+      <PostTitle>{title}</PostTitle>
+    </PostTitleLink>
     <PostDetails>
-      <SubredditLink to={`/${subreddit}`}><h5>{subredditPrefixed}</h5></SubredditLink>
+      <SubredditLink to={`/${subreddit}`}>
+        <Subreddit>{subredditPrefixed}</Subreddit>
+      </SubredditLink>
       <Points><strong>• {numberOfPoints}</strong> points</Points>
     </PostDetails>
   </Card>

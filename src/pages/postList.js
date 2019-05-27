@@ -1,46 +1,68 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { Fragment } from 'react';
 import {
   Heading,
   Post,
+  Loader,
 } from '../components';
-import { useFetchData } from '../helpers';
+import {
+  fetchData,
+  getDotNotation,
+} from '../helpers';
 
-const PageContainer = styled.div`
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  align-content: center;
-`;
+class PostList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+      items: [],
+    };
+  }
 
-const PostList = () => {
-  const { error, loading, items } = useFetchData('https://www.reddit.com/best.json?limit=10');
+  componentDidMount() {
+    fetchData('https://www.reddit.com/best.json?limit=10').then(result => {
+      this.setState({
+        loading: false,
+        items: result.children,
+      });
+    });
+  }
 
-  if (error) { return <span>Error:{error.message}</span> }
-  if (loading) { return <span>Loading...</span> };
+  render() {
+    const { items, loading } = this.state;
+    if(loading) { return <Loader /> };
+    if(!items) { return <p>Er is iets misgegaan bij het ophalen van de data.</p>}
 
-  console.log(items)
-
-  return (
-    <PageContainer>
+    return (
       <div>
-        <Heading title="Home" subtitle="Top 10 posts" indent />
-        {items.data
-          && items.data.children.map(item => {
-            return (<Post
-                key={item.data.id}
-                title={item.data.title}
-                subreddit={item.data.subreddit}
-                subredditPrefixed={item.data.subreddit_name_prefixed}
-                numberOfPoints={item.data.score}
-              />)
-            })
-        }
-      </div>
-    </PageContainer>
-  );
-};
+      {items &&
+        <Fragment>
+          <Heading title="Home" subtitle="Top 10 posts" indent />
+          {items.map(item => {
+            const {
+              id,
+              title,
+              subreddit,
+              subreddit_name_prefixed,
+              score,
+              url,
+            } = item.data;
+
+            return (
+              <Post
+                key={id}
+                title={title}
+                subreddit={subreddit}
+                subredditPrefixed={subreddit_name_prefixed}
+                numberOfPoints={getDotNotation(score)}
+                link={url}
+              />
+            )
+          })}
+        </Fragment>
+      }
+    </div>
+    );
+  }
+}
 
 export default PostList;

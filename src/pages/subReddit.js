@@ -1,20 +1,15 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components'
 import {
   Heading,
   TitleDescriptionPair,
   BackNavigation,
+  Loader,
 } from '../components';
-import { useFetchData } from '../helpers';
-
-const PageContainer = styled.div`
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  align-content: center;
-`;
+import {
+  fetchData,
+  getDotNotation,
+} from '../helpers';
 
 const Details = styled.article`
   width: 100%;
@@ -32,24 +27,46 @@ const Wrapper = styled.div`
   }
 `;
 
-const SubReddit = ({ match }) => {
-  const { subreddit } = match.params;
-  const { error, loading, items } = useFetchData(`https://www.reddit.com/r/${subreddit}/about.json`);
+class SubReddit extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      subreddit: this.props.match.params.subreddit,
+      loading: true,
+      data: {},
+    };
+  }
 
-  if (error) { return <span>Error:{error.message}</span> }
-  if (loading) { return <span>Loading...</span> };
+  componentDidMount() {
+    fetchData(`https://www.reddit.com/r/${this.state.subreddit}/about.json`).then(result => {
+      this.setState({
+        loading: false,
+        data: result,
+      });
+    });
+  }
 
-  return (<PageContainer>
-    <Wrapper>
-      <BackNavigation title="Home" />
-      {items.data && <Heading title={items.data.display_name_prefixed} subtitle="Subreddit details" /> }
-      <Details>
-        {items.data && <TitleDescriptionPair title="Title" description={items.data.title} />}
-        {items.data && <TitleDescriptionPair title="Public Description" description={items.data.public_description} />}
-        {items.data && <TitleDescriptionPair title="Subscriber count" description={items.data.subscribers} />}
-      </Details>
-    </Wrapper>
-  </PageContainer>)
-};
+  render() {
+    const { data, loading } = this.state;
+    if(loading) { return <Loader /> };
+    if(!data) { return <p>Er is iets misgegaan bij het ophalen van de data.</p>}
+
+    return (
+      <Wrapper>
+        {data &&
+          <Fragment>
+            <BackNavigation title="Home" />
+            <Heading title={data.display_name_prefixed} subtitle="Subreddit details" />
+            <Details>
+              <TitleDescriptionPair title="Title" description={data.title} />
+              <TitleDescriptionPair title="Public Description" description={data.public_description} />
+              <TitleDescriptionPair title="Subscriber count" description={getDotNotation(data.subscribers)} />
+            </Details>
+          </Fragment>
+        }
+      </Wrapper>
+    )
+  }
+}
 
 export default SubReddit;
