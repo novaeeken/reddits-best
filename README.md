@@ -62,7 +62,7 @@ const App = () => (
 ```
 
 ## Writing tests
-I wanted to test the rendering of the components I build, but I discovered many people have issues writing test for components that get their styling from a theme provider (Styled Components). Unfortunately, most solutions I could find were over a year old and already contained deprecated code or solutions that didn't work with Styled Components 4.0^. I therefore couldn't get the tests to pass.
+I wanted to test the rendering of the components I build, but I discovered many people have issues writing test for components that get their styling from a theme provider (Styled Components). Unfortunately, most solutions I could find were over a year old and already contained deprecated code or solutions that didn't work with Styled Components 4.0^. I therefore couldn't get the tests to pass and solely wrote tests for the helper functions.
 
 ## Available Scripts
 
